@@ -1,4 +1,4 @@
-# 02267 SDWS - Group 11 - dtu-pay
+# DTUPay
 
 1.  [Introduction](#Introduction)
 2.  [Microservices](#Microservices)
