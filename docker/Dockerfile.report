@@ -1,0 +1,15 @@
+# Author: Daniel (s151641)
+# Author: Troels (s161791)
+
+FROM adoptopenjdk:11-jre-hotspot
+
+WORKDIR /usr/src
+
+COPY ./report-service/target/report-service-1.0.0-runner.jar /usr/src
+
+COPY ./report-service/target/lib /usr/src/lib
+
+EXPOSE 8083
+
+CMD java -Xmx64m \
+      -jar report-service-1.0.0-runner.jar > report-log.txt

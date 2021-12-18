@@ -1,0 +1,55 @@
+---
+openapi: 3.0.3
+info:
+  title: Group 11 - report-service API
+  version: 3.0.3
+paths:
+  /api/v1/management:
+    get:
+      tags:
+      - All transactions and summery
+      responses:
+        "200":
+          description: OK
+  /api/v1/management/report/customer/{customerId}:
+    get:
+      tags:
+      - Get costumer report for a given period
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: end
+        in: query
+        schema:
+          type: string
+      - name: start
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /api/v1/management/report/merchant/{merchantId}:
+    get:
+      tags:
+      - Get merchant report for a given period
+      parameters:
+      - name: merchantId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: end
+        in: query
+        schema:
+          type: string
+      - name: start
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK

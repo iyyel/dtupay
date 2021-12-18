@@ -1,0 +1,105 @@
+# Author: Daniel (s151641)
+# Author: Troels (s161791)
+
+version: '2.1'
+
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+        test: rabbitmq-diagnostics -q ping
+        interval: 30s
+        timeout: 10s
+        retries: 5
+  rest:
+    image: rest:0.1
+    container_name: rest
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.rest
+    restart: on-failure
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    links: 
+      - rabbitmq
+    ports:
+      - "8080:8080"
+  payment:
+    image: payment:0.1
+    container_name: payment
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.payment
+    restart: on-failure
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    links: 
+      - rabbitmq
+#    ports:
+#      - "8080:8080"
+  token:
+    image: token:0.1
+    container_name: token
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.token
+    restart: on-failure
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    links: 
+      - rabbitmq
+    ports:
+      - "8081:8081"
+  account:
+    image: account:0.1
+    container_name: account
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.account
+    restart: on-failure
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    links: 
+      - rabbitmq
+    ports:
+      - "8082:8082"
+  report:
+    image: report:0.1
+    container_name: report
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.report
+    restart: on-failure
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    links: 
+      - rabbitmq
+    ports:
+      - "8083:8083"
+  # client:
+  #   image: client:0.1
+  #   container_name: client
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/Dockerfile.client
+  #   depends_on:
+  #     - rest
+  #     - token
+  #     - payment
+  #     - account
+  #     - report
+  #   links:
+  #    - rest
+  #    - token
+  #    - payment
+  #    - account
+  #    - report

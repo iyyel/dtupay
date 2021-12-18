@@ -1,0 +1,15 @@
+# Author: Daniel (s151641)
+# Author: Troels (s161791)
+
+FROM adoptopenjdk:11-jre-hotspot
+
+WORKDIR /usr/src
+
+COPY ./account-service/target/account-service-1.0.0-runner.jar /usr/src
+
+COPY ./account-service/target/lib /usr/src/lib
+
+EXPOSE 8082
+
+CMD java -Xmx64m \
+      -jar account-service-1.0.0-runner.jar > account-log.txt

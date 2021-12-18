@@ -1,0 +1,15 @@
+# Author: Daniel (s151641)
+# Author: Troels (s161791)
+
+FROM adoptopenjdk:11-jre-hotspot
+
+WORKDIR /usr/src
+
+COPY ./payment-service/target/payment-service-1.0.0.jar /usr/src
+
+#COPY ./payment-service/target/lib /usr/src/lib
+
+#EXPOSE 8080
+
+CMD java -Xmx64m \
+      -jar payment-service-1.0.0.jar > payment-log.txt

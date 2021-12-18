@@ -1,0 +1,179 @@
+---
+openapi: 3.0.3
+info:
+  title: Group 11 DTUPay API
+  version: 3.0.3
+paths:
+  /api/v1/account:
+    get:
+      tags:
+      - getAllAccounts
+      responses:
+        "200":
+          description: OK
+    post:
+      tags:
+      - register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationDTO'
+      responses:
+        "200":
+          description: OK
+  /api/v1/account/by-cpr/{cpr}:
+    get:
+      tags:
+      - getAccountByCpr
+      parameters:
+      - name: cpr
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags:
+      - retireAccountByCpr
+      parameters:
+      - name: cpr
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /api/v1/account/{id}:
+    get:
+      tags:
+      - getAccount
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags:
+      - retireAccount
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /api/v1/payment:
+    post:
+      tags:
+      - Payment
+      summary: Pay x amount to a merchant
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        "200":
+          description: OK
+  /api/v1/payment/refund:
+    post:
+      tags:
+      - Payment
+      summary: Refund amount to customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        "200":
+          description: OK
+  /api/v1/token:
+    post:
+      tags:
+      - requestTokens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+      responses:
+        "200":
+          description: OK
+  /api/v1/token/{id}:
+    get:
+      tags:
+      - getToken
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags:
+      - retireCustomerTokens
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    BankRegistrationDTO:
+      type: object
+      properties:
+        balance:
+          type: number
+    UserRegistrationDTO:
+      type: object
+      properties:
+        bankAccount:
+          $ref: '#/components/schemas/BankRegistrationDTO'
+        cprNumber:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+    TokenRequest:
+      type: object
+      properties:
+        amount:
+          format: int32
+          type: integer
+        id:
+          type: string
+    PaymentRequest:
+      type: object
+      properties:
+        amount:
+          format: int32
+          type: integer
+        customerId:
+          type: string
+        isRefund:
+          type: boolean
+        merchantId:
+          type: string
+        token:
+          type: string
+        refund:
+          type: boolean
